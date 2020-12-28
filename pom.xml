@@ -21,9 +21,9 @@
 	<dependencies>
 	
 		<dependency>
-			<groupId>com.equifax.intl.ar.sdk</groupId>
-			<artifactId>ar-efx-vup-sdk-purposing</artifactId>
-			<version>1.0.6</version>
+		  <groupId>com.equifax.intl.ar.sdk</groupId>
+		  <artifactId>ar-efx-vup-sdk-purposing</artifactId>
+		  <version>2.0.1.0</version>
 		</dependency>
 			
 		<dependency>
@@ -31,6 +31,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

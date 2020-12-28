@@ -1,22 +1,24 @@
 package demo.sdk.vup;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ar.com.equifax.dto.purposing.v1.sdk.model.VupOut;
+import ar.com.equifax.dto.purposing.v1.sdk.model.VupSdkDataReact;
 import ar.efx.vup.sdk.purposing.v1.controller.Ivup;
-import ar.efx.vup.sdk.purposing.v1.exception.VupExceptionError;
-import ar.efx.vup.sdk.purposing.v1.exception.VupExceptionIllegalArgument;
 import ar.efx.vup.sdk.purposing.v1.exception.VupExceptionNOTFOUND;
-import ar.efx.vup.sdk.purposing.v1.exception.VupExceptionUNAUTHORIZED;
-import ar.efx.vup.sdk.purposing.v1.model.ParamPurposing;
+import ar.efx.vup.sdk.purposing.v1.model.ParamIupSourcesDocument;
+import ar.efx.vup.sdk.purposing.v1.model.ParamReactDocument;
+import ar.efx.vup.sdk.purposing.v1.model.ParamReactSdkDocument;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/vup")
-public class RestApi {
+public class Sdkfluxdocument {
 
     @Autowired
     public Ivup vup;
@@ -26,46 +28,34 @@ public class RestApi {
 
             "eyJhbGciOiJSUzI1NiIsImtpZCI6InBpbmdzc28yMDIyMDUiLCJ4NXQiOiIycTlYWllqYklldjNBV0N1b3NUMUNfbGtNSmsiLCJwaS5hdG0iOiIxIn0.eyJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZ3JvdXBzIl0sImNsaWVudF9pZCI6ImRhdGFmYWJyaWNfdXNfcGxhdGZvcm1faWMiLCJpc3MiOiJodHRwczovL2ZlZHNzby5lcXVpZmF4LmNvbSIsImp0aSI6IkpWWHVoblBGdkxIalhNakIiLCJzdWIiOiJseGExNDUiLCJleHAiOjE2MDkxNjc1MDl9.mFcUS6w5TM1diPVeJf1o1hsCNNn_3Ig16eXrQO1QKbwTw98mKxacovEc42-BaX7Vi9toKS5A5oojfXF_3UtzGVmOyuheJSIM2U3w5Oywdrn-GuGXWeO2xS7SuPCmyvSyIQduec3F96wluJfjRD49vzcc66776tDeKg5-eGmZPSrlXsjLGgmd3xJ-nrbESvIZ_JUECsAA9GBUxK71f45S4NLF30uanRGzt4eIwwZvqdWQGHhkPW2W7xlXC1OlTLemtCF5tADMp40rkIc6Mo7CTr1ZMXmiD8jll4or0FRQ8gRoVrJMyQCk8kH8nu4G8gE23oAJEilCH7voFzdN3Q-YMA";
 
-    // http://localhost:8080/api/vup/sdkiup
+    // http://localhost:8080/api/vup/sdkfluxdocument
 
-    @GetMapping("sdkiup")
-    public VupOut getSDK() {
-        // http://localhost:8080/api/sdk
-
-        Set<String> ar = new HashSet<String>();
-
-        ar.add("PURP_CREDIT_CONSCOM");
-
-        VupOut vupOb = null;
-        try {
+    @GetMapping("sdkfluxdocument")
+    public Flux<VupSdkDataReact> getSDKfluxSdocument()
+            throws VupExceptionNOTFOUND {
+        List<ParamIupSourcesDocument> vupEntry =
+                new ArrayList<ParamIupSourcesDocument>();
 
 
-            ParamPurposing vp = new ParamPurposing();
-            vp.setPurposign(ar);
-            vp.setEntityKey(2980645L);
-            vp.setToKen(token);
+        /* ***************** */
+        Set<String> purposign = new HashSet<String>();
+        purposign.add("PURP_CREDIT_CONSCOM");
+
+        ParamIupSourcesDocument pai = new ParamIupSourcesDocument();
+        pai.setNumero("20237979800");
+        pai.setTipo("CUIT");
+        pai.setPurposign(purposign);
+
+        vupEntry.add(pai);
+
+        ParamReactDocument paramd = new ParamReactDocument();
+        paramd.setVupEntry(vupEntry);
+
+        ParamReactSdkDocument param = new ParamReactSdkDocument(paramd, token);
 
 
-            vupOb = vup.exeVup(vp);
+        return vup.FluxVupReactDocument(param);
 
-
-            vupOb.getObraSocial().stream().map(p -> p.getPeriodo())
-                    .forEach(System.out::println);
-
-            return vupOb;
-
-        } catch (VupExceptionError ex) {
-            //
-        } catch (VupExceptionUNAUTHORIZED ex) {
-            //
-        } catch (VupExceptionIllegalArgument ex) {
-            //
-        } catch (VupExceptionNOTFOUND ex) {
-            //
-        }
-
-
-        return null;
     }
 
 
